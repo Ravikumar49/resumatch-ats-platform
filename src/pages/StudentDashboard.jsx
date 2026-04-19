@@ -185,7 +185,7 @@ export default function StudentDashboard({ user }) {
 
   // If nobody is logged in at all, kick to login screen.
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // 3. If they are logged in, but are NOT a student, kick to admin.
