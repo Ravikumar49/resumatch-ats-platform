@@ -20,7 +20,7 @@ export default function StudentDashboard() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/jobs');
+        const response = await fetch('https://resumatch-ats-platform.onrender.com/api/jobs');
         const data = await response.json();
         setJobs(data);
       } catch (error) {
@@ -37,7 +37,7 @@ export default function StudentDashboard() {
     if (!userId || userId === "null") return alert("You must be logged in to apply.");
 
     try {
-      const response = await fetch('http://localhost:5000/api/jobs/apply', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/jobs/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -66,7 +66,7 @@ export default function StudentDashboard() {
 
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/projects/${userId}`);
+        const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/projects/${userId}`);
         const data = await response.json();
         if (data.success) {
           setProjects(data.projects);
@@ -85,7 +85,7 @@ export default function StudentDashboard() {
     const fetchApplication = async () => {
     if(!userId) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/applications/${userId}`);
+      const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/applications/${userId}`);
       if(response.ok) {
         const data = await response.json();
         setAppliedJobs(data);
@@ -104,7 +104,7 @@ export default function StudentDashboard() {
     const fetchProfile = async () => {
       if(!userId) return;
       try {
-        const response = await fetch(`http://localhost:5000/api/user/profile/${userId}`);
+        const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/user/profile/${userId}`);
         if(response.ok) {
           const data = await response.json();
           // If they have AI skills, convert them into a lowercase array for matching
@@ -126,7 +126,7 @@ export default function StudentDashboard() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/projects', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

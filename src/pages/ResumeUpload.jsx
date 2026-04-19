@@ -32,7 +32,7 @@ export default function ResumeUpload({ userId }) {
     formData.append('userId', userId); 
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload-resume', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/upload-resume', {
         method: 'POST',
         body: formData, 
       });

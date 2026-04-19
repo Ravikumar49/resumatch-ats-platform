@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchCandidates() {
       try{
-        const response = await fetch('http://localhost:5000/api/admin/candidates');
+        const response = await fetch('https://resumatch-ats-platform.onrender.com/api/admin/candidates');
         const data = await response.json();
 
         if(Array.isArray(data)) {
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
     async function fetchShortlist(){
       if(!adminId) return;
       try {
-        const response = await fetch(`http://localhost:5000/api/admin/shortlist/${adminId}`);
+        const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/admin/shortlist/${adminId}`);
         const data = await response.json();
         setStarredIds(data);
       }
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
     if(!adminId) return alert("You must be logged in as an admin.");
 
     try {
-      const response = await fetch('http://localhost:5000/api/jobs', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
 
   const toggleStar = async(studentId) => {
     try{
-      const response = await fetch('http://localhost:5000/api/admin/shortlist/toggle', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/admin/shortlist/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ adminId, studentId})
@@ -172,7 +172,7 @@ export default function AdminDashboard() {
       if (!isConfirmed) return; // Exit early if they cancel
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/applications/${applicationId}/status`, {
+      const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/applications/${applicationId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
     const fetchApplicants = async () => {
       if (!adminId) return;
       try {
-        const response = await fetch(`http://localhost:5000/api/admin/applicants/${adminId}`);
+        const response = await fetch(`https://resumatch-ats-platform.onrender.com/api/admin/applicants/${adminId}`);
         const data = await response.json();
         setApplicants(data);
       } catch (error) {
@@ -436,7 +436,7 @@ export default function AdminDashboard() {
                   )}
                   {candidate.resume_path && (
                     <a 
-                      href={`http://localhost:5000/${candidate.resume_path.replace(/\\/g, '/')}`} 
+                      href={`https://resumatch-ats-platform.onrender.com${candidate.resume_path.replace(/\\/g, '/')}`} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="bg-purple-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-purple-700 transition"

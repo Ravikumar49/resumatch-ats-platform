@@ -64,7 +64,7 @@ cd resumatch-ats-platform
    \`\`\`bash
    node server.js
    \`\`\`
-   *(The server will run on http://localhost:5000)*
+   *(The server will run on https://resumatch-ats-platform.onrender.com)*
 
 ### 4. Frontend Setup
 1. Open a **new** terminal window and navigate to the root/frontend folder.

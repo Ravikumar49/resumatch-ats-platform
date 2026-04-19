@@ -29,7 +29,7 @@ export default function ManageResume() {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:5000/api/user/profile', {
+      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/user/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Tell the server to expect JSON
