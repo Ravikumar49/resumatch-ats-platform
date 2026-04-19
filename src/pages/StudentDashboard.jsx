@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ResumeUpload from './ResumeUpload';
 
-export default function StudentDashboard({ user }) {
+export default function StudentDashboard() {
   const navigate = useNavigate();
   
   const [title, setTitle] = useState('');
@@ -12,6 +12,7 @@ export default function StudentDashboard({ user }) {
   const [jobs, setJobs] = useState([]);
   const [refreshCount, setRefreshCount] = useState(0);
   const userId = localStorage.getItem('userId');
+  const userRole = localStorage.getItem('role');
   const [activeView, setActiveView] = useState('dashboard');
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [aiSkills, setAiSkills] = useState([]);
@@ -184,12 +185,12 @@ export default function StudentDashboard({ user }) {
   };
 
   // If nobody is logged in at all, kick to login screen.
-  if (!user) {
+  if (!userId) {
     return <Navigate to="/login" replace />;
   }
 
   // 3. If they are logged in, but are NOT a student, kick to admin.
-  if (user.role?.toLowerCase() !== 'admin') {
+  if (userRole?.toLowerCase() !== 'admin') {
     return <Navigate to="/student" replace />;
   }
 
