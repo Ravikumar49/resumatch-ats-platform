@@ -436,7 +436,7 @@ export default function AdminDashboard() {
                   )}
                   {candidate.resume_path && (
                     <a 
-                      href={`https://resumatch-ats-platform.onrender.com${candidate.resume_path.replace(/\\/g, '/')}`} 
+                      href={`https://resumatch-ats-platform.onrender.com/${candidate.resume_path.replace(/\\/g, '/')}`} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="bg-purple-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-purple-700 transition"

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import ResumeUpload from './ResumeUpload';
 
-export default function StudentDashboard() {
+export default function StudentDashboard({ user }) {
   const navigate = useNavigate();
   
   const [title, setTitle] = useState('');
@@ -182,6 +182,12 @@ export default function StudentDashboard() {
     localStorage.removeItem('userId');
     navigate('/');
   };
+
+  // SAFETY CHECK: If the user is an admin/recruiter, kick them back to their dashboard
+  if (user && user.role !== 'student') {
+    return <Navigate to="/admin" replace />;
+  }
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
