@@ -183,11 +183,15 @@ export default function StudentDashboard({ user }) {
     navigate('/');
   };
 
-  // SAFETY CHECK: If the user is an admin/recruiter, kick them back to their dashboard
-  if (user && user.role !== 'student') {
+  // 2. If nobody is logged in at all, kick to login screen.
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // 3. If they are logged in, but are NOT a student, kick to admin.
+  if (user.role !== 'student') {
     return <Navigate to="/admin" replace />;
   }
-  
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
