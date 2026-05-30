@@ -4,6 +4,7 @@ import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import { PDFParse } from 'pdf-parse';
 import 'dotenv/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -16,10 +17,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
-if (!fs.existsSync('./uploads')) {
-  fs.mkdirSync('./uploads');
-}
 
 // Middleware: Allow React to talk, and allows to read JSON data
 const app = express();
@@ -45,7 +42,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ 
-  storage: storage,
+  dest: os.tmpdir(),
   fileFilter: (req, file, cb) => {
     // Security check: Only allow PDF files
     if (file.mimetype === 'application/pdf') {
