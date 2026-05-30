@@ -350,7 +350,7 @@ app.post('/api/upload-resume', (req, res, next) => {
     
     // Upload the file to the cloud (resource_type: 'raw' is required for PDFs!)
     const cloudResult = await cloudinary.uploader.upload(filePath, {
-      resource_type: 'raw',
+      resource_type: 'image',
       folder: 'resumatch_pdfs'
     });
 
