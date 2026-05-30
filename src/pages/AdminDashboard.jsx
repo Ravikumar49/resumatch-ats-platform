@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchCandidates() {
       try{
-        const response = await fetch('https://resumatch-ats-platform.onrender.com/api/admin/candidates');
+        const response = await fetch(`${API_URL}/api/admin/candidates`);
         const data = await response.json();
 
         if(Array.isArray(data)) {
@@ -436,7 +437,10 @@ export default function AdminDashboard() {
                   )}
                   {candidate.resume_path && (
                     <a 
-                      href={`https://resumatch-ats-platform.onrender.com/${candidate.resume_path.replace(/\\/g, '/')}`} 
+                      href={candidate.resume_path.startsWith('http') 
+                            ? candidate.resume_path 
+                            : `${import.meta.env.VITE_BACKEND_URL}/${candidate.resume_path.replace(/\\/g, '/')}`
+                      }
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="bg-purple-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-purple-700 transition"

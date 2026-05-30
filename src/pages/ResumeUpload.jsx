@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from '../config';
 
 export default function ResumeUpload({ userId }) {
   const [file, setFile] = useState(null);
@@ -32,7 +33,7 @@ export default function ResumeUpload({ userId }) {
     formData.append('userId', userId); 
 
     try {
-      const response = await fetch('https://resumatch-ats-platform.onrender.com/api/upload-resume', {
+      const response = await fetch(`${API_URL}/upload-resume`, {
         method: 'POST',
         body: formData, 
       });

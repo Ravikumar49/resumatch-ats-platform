@@ -9,6 +9,14 @@ import 'dotenv/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 // Middleware: Allow React to talk, and allows to read JSON data
 const app = express();
 app.use(cors());
@@ -337,6 +345,22 @@ app.post('/api/upload-resume', (req, res, next) => {
     const skillsString = aiData.skills.join(', ');
 
     // Save everything to the database
+    // --- NEW CLOUDINARY LOGIC ---
+    console.log("Uploading PDF to Cloudinary...");
+    
+    // Upload the file to the cloud (resource_type: 'raw' is required for PDFs!)
+    const cloudResult = await cloudinary.uploader.upload(filePath, {
+      resource_type: 'raw',
+      folder: 'resumatch_pdfs'
+    });
+
+    const permanentUrl = cloudResult.secure_url;
+    console.log("Cloudinary Upload Success!", permanentUrl);
+
+    // Clean up: Delete the temporary file from your local hard drive
+    fs.unlinkSync(filePath);
+
+    // Save everything to the database (Notice we are saving 'permanentUrl' now!)
     const sql = `
       INSERT INTO student_profiles (user_id, resume_path, resume_text, ai_skills, ai_summary) 
       VALUES (?, ?, ?, ?, ?)
@@ -345,18 +369,18 @@ app.post('/api/upload-resume', (req, res, next) => {
       ai_skills = VALUES(ai_skills), ai_summary = VALUES(ai_summary)
     `;
     
-    db.query(sql, [userId, filePath, extractedText, skillsString, aiData.summary], (err, result) => {
+    db.query(sql, [userId, permanentUrl, extractedText, skillsString, aiData.summary], (err, result) => {
       if (err) {
         console.error("DATABASE CRASHED:", err.message);
         return res.status(500).json({ error: "Database failed." });
       }
 
-      res.json({ success: true, message: "Resume uploaded, parsed and analyzed by AI!", path: filePath });
+      res.json({ success: true, message: "Resume uploaded, analyzed, and secured in the cloud!", path: permanentUrl });
     });
 
-  } catch (parseError) {
-    console.error("PIPELINE FAILED:", parseError);
-    return res.status(500).json({ error: "Failed to process Resume." });
+    } catch (parseError) {
+      console.error("PIPELINE FAILED:", parseError);
+      return res.status(500).json({ error: "Failed to process Resume." });
   }
 });
 
