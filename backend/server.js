@@ -17,6 +17,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+if (!fs.existsSync('./uploads')) {
+  fs.mkdirSync('./uploads');
+}
+
 // Middleware: Allow React to talk, and allows to read JSON data
 const app = express();
 app.use(cors());
