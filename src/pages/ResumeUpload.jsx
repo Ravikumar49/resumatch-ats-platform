@@ -33,7 +33,7 @@ export default function ResumeUpload({ userId }) {
     formData.append('userId', userId); 
 
     try {
-      const response = await fetch(`${API_URL}/upload-resume`, {
+      const response = await fetch(`${API_URL}/api/upload-resume`, {
         method: 'POST',
         body: formData, 
       });
