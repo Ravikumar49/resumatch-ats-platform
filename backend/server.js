@@ -310,7 +310,7 @@ app.post('/api/upload-resume', (req, res, next) => {
   try {
     const dataBuffer = fs.readFileSync(filePath);
     const parser = new pdf.PDFParse({ data: dataBuffer });
-    const parsedData = await actualFunction(dataBuffer);
+    const parsedData = await parser.getText();
     const extractedText = parsedData.text;
     // Free up memory so the cloud server doesn't choke
     if (parser.destroy) await parser.destroy();
