@@ -309,21 +309,11 @@ app.post('/api/upload-resume', (req, res, next) => {
 
   try {
     const dataBuffer = fs.readFileSync(filePath);
-    // FORCING RENDER TO WAKE UP
-    let actualFunction;
-    if (typeof pdf === 'function') {
-      actualFunction = pdf; // Found it normally
-    } else if (pdf && typeof pdf.default === 'function') {
-      actualFunction = pdf.default; // Found it hiding in default
-    } else if (pdf && typeof pdf.pdfParse === 'function') {
-      actualFunction = pdf.pdfParse; // Found it hiding in a named export
-    } else {
-      // If it's still broken, force the server to confess exactly what it is holding
-      const packageShape = pdf ? Object.keys(pdf).join(', ') : 'undefined';
-      throw new Error(`ROGUE PACKAGE! Type: ${typeof pdf}. Available pieces: [${packageShape}]`);
-    }
+    const parser = new pdf.PDFParse({ data: dataBuffer });
     const parsedData = await actualFunction(dataBuffer);
     const extractedText = parsedData.text;
+    // Free up memory so the cloud server doesn't choke
+    if (parser.destroy) await parser.destroy();
 
     console.log("PDF Parsed successfully! Asking Gemini to analyze");
 
