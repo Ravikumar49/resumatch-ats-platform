@@ -308,6 +308,7 @@ app.post('/api/upload-resume', (req, res, next) => {
   const filePath = req.file.path;
 
   try {
+    const dataBuffer = fs.readFileSync(filePath);
     const runPdfParse = pdf.default || pdf;
     const parsedData = await runPdfParse(dataBuffer);
     const extractedText = parsedData.text;
