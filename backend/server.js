@@ -379,8 +379,9 @@ app.post('/api/upload-resume', (req, res, next) => {
       res.json({ success: true, message: "Resume uploaded, analyzed, and secured in the cloud!", path: permanentUrl });
     });
 
-    } catch (parseError) {
-      console.error("PIPELINE FAILED:", parseError);
+    } catch (error) {
+      console.error("PIPELINE FAILED:", error);
+      console.error("🔥 ACTUAL CRASH REASON:", error);
       return res.status(500).json({ error: "Failed to process Resume." });
   }
 });
