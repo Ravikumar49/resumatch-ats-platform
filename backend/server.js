@@ -310,9 +310,6 @@ app.post('/api/upload-resume', (req, res, next) => {
   try {
     const runPdfParse = pdf.default || pdf;
     const parsedData = await runPdfParse(dataBuffer);
-
-    // Parse the PDF file and extract text
-    const parsedData = await pdf(dataBuffer);
     const extractedText = parsedData.text;
 
     console.log("PDF Parsed successfully! Asking Gemini to analyze");
