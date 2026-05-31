@@ -331,7 +331,7 @@ app.post('/api/upload-resume', (req, res, next) => {
     `;
 
     // Call the Gemini API
-    const model = ai.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent(prompt);
 
     // Clean and parse the AI's response
