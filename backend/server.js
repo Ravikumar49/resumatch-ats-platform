@@ -5,7 +5,9 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
-import { PDFParse } from 'pdf-parse';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
 import 'dotenv/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -309,12 +311,10 @@ app.post('/api/upload-resume', (req, res, next) => {
     // Read the raw PDF file from the uploads folder
     const dataBuffer = fs.readFileSync(filePath);
 
-    const parser = new PDFParse({ data: dataBuffer });
-    
-    // Pass it to pdf-parse to extract the text
-    const parsedData = await parser.getText();
+    // Parse the PDF file and extract text
+    const parsedData = await pdf(dataBuffer);
     const extractedText = parsedData.text;
-    
+
     console.log("PDF Parsed successfully! Asking Gemini to analyze");
 
     // The AI Prompt (for skills and summary)
@@ -380,9 +380,9 @@ app.post('/api/upload-resume', (req, res, next) => {
     });
 
     } catch (error) {
-      console.error("PIPELINE FAILED:", error);
-      console.error("🔥 ACTUAL CRASH REASON:", error);
-      return res.status(500).json({ error: "Failed to process Resume." });
+      res.status(500).json({ 
+      message: `DEBUG CLOUD ERROR: ${error.message || error}` 
+    });
   }
 });
 
